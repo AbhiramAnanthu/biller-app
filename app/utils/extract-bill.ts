@@ -28,7 +28,7 @@ export async function extractBill(file: File) {
   });
 
   const response = await ai.models.generateContent({
-    model: 'gemini-2.5-flash',
+    model: 'gemini-2.0-flash',
     contents: createUserContent([
         createPartFromUri(billImage.uri!, billImage.mimeType!),
         prompt
@@ -57,6 +57,9 @@ export async function extractBill(file: File) {
                         properties: {
                             splitUpLabel: {
                                 type: Type.STRING
+                            },
+                            value: {
+                                type: Type.NUMBER
                             }
                         }
                     }
