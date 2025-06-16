@@ -4,7 +4,7 @@ import { z } from 'zod';
 const BillSchema = z.object({
     title: z.string().min(1).optional(),
     issued_date: z.string().min(1).optional(),
-    bille_last_date: z.string().min(1).optional(),
+    bill_last_date: z.string().min(1).optional(),
     splitup: z.array(
         z.object({
             splitUpLabel: z.string().min(1),

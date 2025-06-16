@@ -5,16 +5,31 @@ import { BillSchema } from '@/app/utils/schema';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Loader } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 export const UploadBillForm = () => {
   const [file, setFile] = useState<File | undefined | null>(undefined);
+  const [loading, setLoading] = useState(false);
 
+  const router = useRouter();
   const handleBillUpload = async () => {
+    const fileUrl = URL.createObjectURL(file!);
     try {
+      setLoading(true);
       const llmResponse = await extractBill(file!);
       const extractedBill = BillSchema.parse(JSON.parse(llmResponse.text!));
-      console.log(extractedBill);
+      localStorage.setItem(
+        'billdata',
+        JSON.stringify({
+          type: file?.type,
+          url: fileUrl,
+          data: extractedBill,
+        })
+      );
+      setLoading(false);
+      router.push(`/console/bill/preview`);
     } catch (err) {
       console.error(err);
     }
@@ -22,7 +37,7 @@ export const UploadBillForm = () => {
 
   return (
     <form
-      className="w-full flex flex-col justify-center gap-4 px-3 py-4 h-full"
+      className="w-full lg:w-3/4 flex flex-col justify-center gap-4 px-3 py-4 h-full"
       onSubmit={async (e) => {
         e.preventDefault();
         await handleBillUpload();
@@ -42,8 +57,8 @@ export const UploadBillForm = () => {
         />
       </div>
 
-      <Button variant="ghost" type="submit" className="self-center">
-        Submit
+      <Button variant="outline" type="submit" className="self-start w-1/2">
+        {loading ? <Loader className="animate-spin" /> : <p>create</p>}
       </Button>
     </form>
   );

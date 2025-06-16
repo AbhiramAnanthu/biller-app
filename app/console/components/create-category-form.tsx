@@ -11,7 +11,7 @@ export const CreateCategoryForm = () => {
   const [name, setName] = useState('');
 
   return (
-    <form className="flex flex-col gap-4 w-full max-w-md px-2 py-3">
+    <form className="flex flex-col gap-4 w-full max-w-md px-4 py-6 border h-full">
       <div className="flex flex-col gap-2">
         <Label htmlFor="name">Name</Label>
         <Input
@@ -34,8 +34,8 @@ export const CreateCategoryForm = () => {
         />
       </div>
 
-      <Button type="submit" variant="ghost" className="self-center">
-        Submit
+      <Button type="submit" variant="outline" className="self-start">
+        create
       </Button>
     </form>
   );

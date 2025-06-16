@@ -1,22 +1,18 @@
-import { ReceiptIndianRupee } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { SidebarCollapsibleSection } from './drop-down-menu';
 
-export function BillDropdownMenu() {
+export function AddDropdownMenu() {
   const billDropdownMenuItems = {
-    title: 'Bills',
-    icon: <ReceiptIndianRupee />,
+    title: 'New',
+    icon: <Plus />,
     items: [
       {
-        itemName: 'upcoming bills',
-        href: '/bills/due-date/future',
+        itemName: 'Bill',
+        href: '/console/bill/new',
       },
       {
-        itemName: 'recurring bills',
-        href: '/bills/recurring/',
-      },
-      {
-        itemName: 'paid bills',
-        href: '/bills/paid',
+        itemName: 'category',
+        href: '/category/new',
       },
     ],
   };

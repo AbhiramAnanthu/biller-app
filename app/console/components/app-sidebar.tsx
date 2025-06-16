@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/sidebar';
 import { ReceiptIndianRupee, SidebarCloseIcon } from 'lucide-react';
 import Link from 'next/link';
-import { BillDropdownMenu } from './bill-dropdown-menu';
+import { AddDropdownMenu } from './bill-dropdown-menu';
 import { CategoryDropdownMenu } from './category-dropdown-menu';
 import { AnalyticDropdownMenu } from './analytic-dropdown-menu';
 
@@ -19,20 +19,20 @@ export function AppSideBar() {
   return (
     <Sidebar collapsible="offcanvas">
       <SidebarHeader className="mt-5">
-        <h1>Budget</h1>
+        <h1>Actions</h1>
       </SidebarHeader>
       <SidebarContent className="">
         <SidebarGroup>
-          <BillDropdownMenu />
+          <AddDropdownMenu />
           <CategoryDropdownMenu />
           <AnalyticDropdownMenu />
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
-        <SidebarGroup>
+        {/* <SidebarGroup>
           <SidebarMenuItem>settings</SidebarMenuItem>
           <SidebarMenuItem>help</SidebarMenuItem>
-        </SidebarGroup>
+        </SidebarGroup> */}
       </SidebarFooter>
     </Sidebar>
   );
