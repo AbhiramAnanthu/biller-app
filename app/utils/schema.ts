@@ -1,10 +1,17 @@
 import { z } from 'zod';
 
 
+const DateSchema = z.object({
+    day: z.number().int().min(1).max(31),
+    month: z.number().int().min(1).max(12),
+    year: z.number().int().min(2000)
+
+})
+
 const BillSchema = z.object({
     title: z.string().min(1).optional(),
-    issued_date: z.string().min(1).optional(),
-    bill_last_date: z.string().min(1).optional(),
+    issued_date: DateSchema,
+    bill_last_date: DateSchema,
     splitup: z.array(
         z.object({
             splitUpLabel: z.string().min(1),

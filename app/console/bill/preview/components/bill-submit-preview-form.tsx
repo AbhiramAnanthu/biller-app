@@ -13,24 +13,45 @@ export const BillSubmitPreviewForm = ({
   formData: z.infer<typeof BillSchema>;
 }) => {
   const [title, setTitle] = useState('');
-  const [date, setDate] = useState(() => {
-    const currentDate = new Date();
-    return currentDate.toISOString().split('T')[0];
-  });
+  const [issuedDate, setIssuedDate] = useState(
+    `${formData.issued_date.year}-${
+      formData.issued_date.month < 10
+        ? `0${formData.issued_date.month}`
+        : `${formData.issued_date.month}`
+    }-${
+      formData.issued_date.day < 10
+        ? `0${formData.issued_date.day}`
+        : `${formData.issued_date.day}`
+    }`
+  );
+
+  const [billLastDate, setbillLastDate] = useState(
+    `${formData.bill_last_date.year}-${
+      formData.bill_last_date.month < 10
+        ? `0${formData.bill_last_date.month}`
+        : `${formData.bill_last_date.month}`
+    }-${
+      formData.bill_last_date.day < 10
+        ? `0${formData.bill_last_date.day}`
+        : `${formData.bill_last_date.day}`
+    }`
+  );
 
   const [totalAmount, setTotalAmount] = useState(0);
   const [recipientName, setRecipientName] = useState('');
 
   useEffect(() => {
+    console.log(formData);
     setTitle(formData.title!);
     setTotalAmount(formData.total_amount!);
     setRecipientName(formData.recipient_name!);
+    console.log(billLastDate);
   }, []);
 
   return (
     <form
       action=""
-      className="border w-full h-full px-3 py-4 flex flex-col justify-evenly"
+      className="border w-5/6 h-5/6 px-3 py-4 flex flex-col justify-evenly"
     >
       <div>
         <Label htmlFor="title" className="mb-1">
@@ -53,8 +74,10 @@ export const BillSubmitPreviewForm = ({
           type="date"
           id="issuedDate"
           name="issuedDate"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
+          value={issuedDate}
+          onChange={(e) => {
+            e.target.value;
+          }}
           className="mb-2"
         />
       </div>
@@ -67,8 +90,10 @@ export const BillSubmitPreviewForm = ({
           type="date"
           id="billLastDate"
           name="billLastDate"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
+          value={billLastDate}
+          onChange={(e) => {
+            setbillLastDate(e.target.value);
+          }}
           className="mb-2"
         />
       </div>

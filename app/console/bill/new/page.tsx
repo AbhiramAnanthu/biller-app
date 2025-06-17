@@ -1,9 +1,9 @@
-import { UploadBillForm } from '../../components/upload-bill';
+import { UploadBillForm } from './component/upload-bill';
 
 export default function BillCreatePage() {
   return (
-    <div className="flex justify-center items-center border h-3/4 w-1/2 mx-auto">
-      <div className="w-full border mx-4 px-3 py-4 rounded-md">
+    <div className="w-full h-full flex justify-center items-center flex-col">
+      <div className="md:w-3/4 w-3/5 h-1/2 md:mx-auto mx-5 border px-3 py-4 rounded-md">
         <UploadBillForm />
       </div>
     </div>

@@ -1,5 +1,12 @@
 export const PdfPreview = ({ url }: { url: string }) => {
   return (
-    <iframe src={url} width="100%" height="100% " style={{ border: 'none' }} />
+    <div className="w-5/6 h-5/6 overflow-hidden bg-white">
+      <iframe
+        src={url}
+        className="w-full h-full"
+        style={{ border: 'none' }}
+        allowFullScreen
+      />
+    </div>
   );
 };

@@ -1,9 +1,10 @@
 import {
-  GoogleGenAI,
-  createUserContent,
-  createPartFromUri,
-  Type
+    GoogleGenAI,
+    createUserContent,
+    createPartFromUri,
+    Type
 } from "@google/genai";
+import { BillSchema } from "./schema";
 
 const ai = new GoogleGenAI({ apiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY });
 
@@ -22,60 +23,83 @@ Instructions:
 `;
 
 export async function extractBill(file: File) {
-  const billImage = await ai.files.upload({
-    file: file,
-    config: { mimeType: file.type },
-  });
+    const billImage = await ai.files.upload({
+        file: file,
+        config: { mimeType: file.type },
+    });
 
-  const response = await ai.models.generateContent({
-    model: 'gemini-2.0-flash',
-    contents: createUserContent([
-        createPartFromUri(billImage.uri!, billImage.mimeType!),
-        prompt
-    ]),
-    config: {
-        responseMimeType: 'application/json',
-        responseSchema: {
-            type: Type.OBJECT,
-            properties:  {
-                title: {
-                    type: Type.STRING,
-                },
-                
-                issued_date: {
-                    type: Type.STRING
-                },
-                
-                bill_last_date: {
-                    type: Type.STRING,
-                },
+    const response = await ai.models.generateContent({
+        model: 'gemini-2.0-flash',
+        contents: createUserContent([
+            createPartFromUri(billImage.uri!, billImage.mimeType!),
+            prompt
+        ]),
+        config: {
+            responseMimeType: 'application/json',
+            responseSchema: {
+                type: Type.OBJECT,
+                properties: {
+                    title: {
+                        type: Type.STRING,
+                    },
 
-                splitup: {
-                    type: Type.ARRAY,
-                    items: {
+                    issued_date: {
                         type: Type.OBJECT,
                         properties: {
-                            splitUpLabel: {
-                                type: Type.STRING
+                            day: {
+                                type: Type.NUMBER
                             },
-                            value: {
+                            month: {
+                                type: Type.NUMBER
+                            },
+                            year: {
                                 type: Type.NUMBER
                             }
                         }
-                    }
-                },
-                
-                total_amount: {
-                    type: Type.NUMBER
-                },
+                    },
 
-                recipient_name: {
-                    type: Type.STRING
+                    bill_last_date: {
+                        type: Type.OBJECT,
+                        properties: {
+                            day: {
+                                type: Type.NUMBER
+                            },
+                            month: {
+                                type: Type.NUMBER
+                            },
+                            year: {
+                                type: Type.NUMBER
+                            }
+                        }
+                    },
+
+                    splitup: {
+                        type: Type.ARRAY,
+                        items: {
+                            type: Type.OBJECT,
+                            properties: {
+                                splitUpLabel: {
+                                    type: Type.STRING
+                                },
+                                value: {
+                                    type: Type.NUMBER
+                                }
+                            }
+                        }
+                    },
+
+                    total_amount: {
+                        type: Type.NUMBER
+                    },
+
+                    recipient_name: {
+                        type: Type.STRING
+                    }
                 }
             }
         }
-    }
-  })
+    })
 
-  return response;
+    const extractedBill = BillSchema.parse(JSON.parse(response.text!))
+    return extractedBill;
 }
