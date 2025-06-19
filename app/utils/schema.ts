@@ -5,16 +5,15 @@ const DateSchema = z.object({
     day: z.number().int().min(1).max(31),
     month: z.number().int().min(1).max(12),
     year: z.number().int().min(2000)
-
 })
 
 const BillSchema = z.object({
     title: z.string().min(1).optional(),
-    issued_date: DateSchema,
-    bill_last_date: DateSchema,
+    issued_date: DateSchema.transform(val => new Date(val.year, val.month - 1, val.day)),
+    bill_last_date: DateSchema.transform(val => new Date(val.year, val.month - 1, val.day)),
     splitup: z.array(
         z.object({
-            splitUpLabel: z.string().min(1),
+            label: z.string().min(1),
             value: z.number()
         })
     ).optional(),
@@ -34,4 +33,9 @@ const CategorySchema = z.object({
     userid: z.string().min(1),
 })
 
-export { BillSchema, CategorySchema }
+const UserSchema = z.object({
+    name: z.string().min(1),
+    email: z.string().email().min(1),
+})
+
+export { BillSchema, CategorySchema, UserSchema }
