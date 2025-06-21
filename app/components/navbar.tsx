@@ -1,8 +1,11 @@
 import Link from 'next/link';
 import { ModeToggle } from './mode-toggle';
 import { UserDropdownMenu } from './user-dropdown-menu';
+import { auth0 } from '@/lib/auth0';
+import { Button } from '@/components/ui/button';
 
-export const NavBar = () => {
+export const NavBar = async () => {
+  const session = await auth0.getSession();
   return (
     <nav className="w-full flex items-center justify-around px-3 py-4">
       <Link href="/">
@@ -11,10 +14,16 @@ export const NavBar = () => {
 
       <div className="flex gap-4 items-center">
         <ModeToggle />
-        <UserDropdownMenu
-          src="https://avatars.githubusercontent.com/u/162581534?v=4"
-          alt="AB"
-        />
+        {session?.user ? (
+          <UserDropdownMenu
+            src={session.user.picture!}
+            alt={session.user.name?.slice(0, 2)!}
+          />
+        ) : (
+          <Button>
+            <a href="/auth/login">Login</a>
+          </Button>
+        )}
       </div>
     </nav>
   );

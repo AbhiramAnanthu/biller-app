@@ -32,14 +32,8 @@ export const UserDropdownMenu = ({
           </Button>
         </DropdownMenuItem>
         <DropdownMenuItem asChild className="px-2">
-          <Button
-            variant="ghost"
-            onClick={() => {
-              //logout logic
-            }}
-            className="w-full px-2"
-          >
-            logout
+          <Button variant="ghost" className="w-full px-2">
+            <a href="/auth/logout">logout</a>
           </Button>
         </DropdownMenuItem>
       </DropdownMenuContent>
